@@ -1,0 +1,15 @@
+services:
+  invoice-assistant:
+    container_name: invoice-assistant
+    hostname: invoice-assistant
+    image: asamofal/invoice-assistant:1.0
+    volumes:
+      - ./data:/usr/src/invoice-assistant/data
+    secrets:
+      - source: config
+        target: configs.json
+    restart: unless-stopped
+
+secrets:
+  config:
+    file: ./config.json
