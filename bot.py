@@ -1,16 +1,38 @@
 #!/usr/bin/env python
 
+import logging
 import os
 import subprocess
 from pathlib import Path
 from zipfile import ZipFile
 
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+
+from configs import Config
 from utils import now
 
 INVOICE_TEMPLATE_PATH = Path('invoice_template.odt')
 
+# Enable logging
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
+logger = logging.getLogger(__name__)
+
 
 def main() -> None:
+    bot_token = Config().telegram_bot_token
+    application = ApplicationBuilder().token(bot_token).build()
+
+    application.add_handler(CommandHandler('start', start))
+
+    application.run_polling()
+
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await update.message.reply_text('Creating new invoice...')
+
     Invoice(INVOICE_TEMPLATE_PATH)
 
 

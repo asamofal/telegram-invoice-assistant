@@ -1,4 +1,12 @@
 /*
 
+!.gitignore
+
 !bot.py
 !requirements.txt
+
+!config.json.example
+
+!Dockerfile
+!docker-compose.yml
+!.dockerignore
